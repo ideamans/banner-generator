@@ -63,39 +63,39 @@ OGPバナー風に縦方向に均等に配置します。
 
 ```js
 {
-      bgUrl: '', // 背景画像のURL(必須)
-      paddingY: '15%', // 3行表示の際の上下余白(ピクセル数または背景画像の高さに対する%)
-      lineGap: '5%', // 2行表示の際の行間(ピクセル数または背景画像の高さに対する%)
-      texts: [
-        {
-          content: ``, // 1行目のテキスト
-          fontSize: '20%', // 1行目のフォントサイズ(ピクセル数または背景画像の幅に対する%)
-          fillColor: 'white', // 1行目の色
-          minWidth: '60%', // 1行目の最大幅(ピクセル数または背景画像の幅に対する%)
-          maxWidth: '60%', // 1行目の最小幅(ピクセル数または背景画像の幅に対する%)
-          letterSpacing: 0, // 1行目の文字間隔(em)
-          fontFace: 'NotoSansJP-Black', // 1行目のフォント
-        },
-        { // 2行目
-          content: ``,
-          fontSize: '10%',
-          fillColor: 'white',
-          minWidth: '50%',
-          maxWidth: '90%',
-          letterSpacing: 0,
-          fontFace: 'NotoSansJP-Bold',
-        },
-        { // 3行目
-          content: ``,
-          fontSize: '5%',
-          fillColor: 'white',
-          minWidth: '40%',
-          maxWidth: '40%',
-          letterSpacing: 0,
-          fontFace: 'NotoSansJP-Medium',
-        },
-      ],
-    }
+  bgUrl: '', // 背景画像のURL(必須)
+  paddingY: '15%', // 3行表示の際の上下余白(ピクセル数または背景画像の高さに対する%)
+  lineGap: '5%', // 2行表示の際の行間(ピクセル数または背景画像の高さに対する%)
+  texts: [
+    {
+      content: ``, // 1行目のテキスト
+      fontSize: '20%', // 1行目のフォントサイズ(ピクセル数または背景画像の幅に対する%)
+      fillColor: 'white', // 1行目の色
+      minWidth: '60%', // 1行目の最大幅(ピクセル数または背景画像の幅に対する%)
+      maxWidth: '60%', // 1行目の最小幅(ピクセル数または背景画像の幅に対する%)
+      letterSpacing: 0, // 1行目の文字間隔(em)
+      fontFace: 'NotoSansJP-Black', // 1行目のフォント
+    },
+    { // 2行目
+      content: ``,
+      fontSize: '10%',
+      fillColor: 'white',
+      minWidth: '50%',
+      maxWidth: '90%',
+      letterSpacing: 0,
+      fontFace: 'NotoSansJP-Bold',
+    },
+    { // 3行目
+      content: ``,
+      fontSize: '5%',
+      fillColor: 'white',
+      minWidth: '40%',
+      maxWidth: '40%',
+      letterSpacing: 0,
+      fontFace: 'NotoSansJP-Medium',
+    },
+  ],
+}
 ```
 
 ### フォント
