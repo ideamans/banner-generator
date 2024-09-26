@@ -49,7 +49,8 @@ export interface CanvasSpec {
   width: number
   height: number
   lineGap: Scale
-  paddingY: Scale
+  paddingTop: Scale
+  paddingBottom: Scale
 }
 
 export interface SvgTextSpec {
@@ -261,10 +262,11 @@ export async function placeThreeSvgTexts(
   const thirdMetrics = await calculateSvgTextSpec(third, canvas)
   const thirdSvg = await createSvg(third, thirdMetrics.fontSize)
 
-  const paddingY = parseScale(canvas.paddingY, canvas.height)
-  const firstTop = paddingY - firstMetrics.topOffset
+  const paddingTop = parseScale(canvas.paddingTop, canvas.height)
+  const paddingBottom = parseScale(canvas.paddingBottom, canvas.height)
+  const firstTop = paddingTop - firstMetrics.topOffset
   const firstBottom = firstTop + firstMetrics.height + firstMetrics.descender
-  const thirdTop = canvas.height - paddingY - thirdMetrics.height - thirdMetrics.descender
+  const thirdTop = canvas.height - paddingBottom - thirdMetrics.height - thirdMetrics.descender
   const secondTop = firstBottom + (thirdTop - firstBottom - secondMetrics.height) / 2
 
   pushOverlaySvg(newOverlays, {
