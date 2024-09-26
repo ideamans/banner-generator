@@ -7,7 +7,8 @@ import { DependencyInterface, Scale } from '../types.js'
 export namespace BannerTypeA {
   export interface BannerSpec {
     bgUrl: string
-    paddingY: Scale
+    paddingTop: Scale
+    paddingBottom: Scale
     lineGap: Scale
     texts?: TextSpec[]
   }
@@ -15,7 +16,8 @@ export namespace BannerTypeA {
   export function defaultBannerSpec(): BannerSpec {
     return {
       bgUrl: '',
-      paddingY: '15%',
+      paddingTop: '15%',
+      paddingBottom: '15%',
       lineGap: '5%',
       texts: [
         {
@@ -66,7 +68,8 @@ export namespace BannerTypeA {
     const canvas = {
       width: bgMetrics.width,
       height: bgMetrics.height,
-      paddingY: spec.paddingY,
+      paddingTop: spec.paddingTop,
+      paddingBottom: spec.paddingBottom,
       lineGap: spec.lineGap,
     }
 
