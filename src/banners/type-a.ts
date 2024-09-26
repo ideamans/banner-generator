@@ -1,3 +1,4 @@
+import ColorParse from 'color-parse'
 import Sharp from 'sharp'
 
 import { placeOneSvgText, placeThreeSvgTexts, placeTwoSvgTexts, TextSpec } from '../text.js'
@@ -7,6 +8,7 @@ import { DependencyInterface, Scale } from '../types.js'
 export namespace BannerTypeA {
   export interface BannerSpec {
     bgUrl: string
+    overlayColor: string
     paddingTop: Scale
     paddingBottom: Scale
     lineGap: Scale
@@ -16,6 +18,7 @@ export namespace BannerTypeA {
   export function defaultBannerSpec(): BannerSpec {
     return {
       bgUrl: '',
+      overlayColor: '',
       paddingTop: '15%',
       paddingBottom: '15%',
       lineGap: '5%',
@@ -73,8 +76,28 @@ export namespace BannerTypeA {
       lineGap: spec.lineGap,
     }
 
-    // overlay texts
+    // overlays
     let overlays: Sharp.OverlayOptions[] = []
+
+    // overlay color
+    if (spec.overlayColor) {
+      const color = ColorParse(spec.overlayColor)
+      if (color.space !== 'rgb') {
+        throw new Error('overlayColor must be RGB color space')
+      }
+
+      overlays.push({
+        input: {
+          create: {
+            width: canvas.width,
+            height: canvas.height,
+            channels: 4,
+            background: { r: color.values[0], g: color.values[1], b: color.values[2], alpha: color.alpha },
+          },
+        },
+        blend: 'over',
+      })
+    }
 
     // available texts and place them by numbers
     const available = (spec.texts || []).filter((t) => t.content).slice(0, 3)
