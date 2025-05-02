@@ -3,6 +3,7 @@ import Fastify from 'fastify'
 import { merge } from 'ts-deepmerge'
 
 import { BannerTypeA } from './banners/type-a.js'
+import { base64ToText, brotliToBase64 } from './brotli.js'
 import { Dependency } from './dependency.js'
 
 const dependency = new Dependency()
@@ -34,6 +35,29 @@ app.get<{
 }>('/banners/type-a', async (req, res) => {
   const spec = BannerTypeA.defaultBannerSpec()
   const defaultSpec = BannerTypeA.defaultBannerSpec()
+
+  const b = await brotliToBase64(
+    'bgUrl=https%3A%2F%2Fnotes.ideamans.com%2Fogp-background.jpg&text0=ideaman%27s+Notes&text0width=60%25&text1=Mastra+%2B+ローカルLLM経由でMCPする&texts%5B1%5D.fontSize=5%25&texts%5B1%5D.minWidth=60%25&texts%5B1%5D.maxWidth=90%25&text2=2025-05-01+%40miyanaga&text%5B2%5D.fontSize=3%25&text%5B2%5D.minWidth=30%25&text%5B2%5D.maxWidth=40%25'
+  )
+  console.log(encodeURIComponent(b))
+
+  // Parse _b as base64 brotli
+  // XのカードがURLが長いまたは複雑だと対応しないようなのでBrotliで圧縮した値をパースする仕組みを導入
+  if (req.query._b) {
+    try {
+      const qs = await base64ToText(req.query._b)
+      const query = new URLSearchParams(qs)
+
+      // Merge zip query parameters with existing query
+      for (const [key, value] of query.entries()) {
+        req.query[key] = value
+      }
+    } catch (err) {
+      dependency.logger?.warn({ err }, `Failed to parse _b as base64 brotli: ${err.message}`)
+    }
+
+    delete req.query._b
+  }
 
   // Merge key value
   for (const [key, value] of Object.entries(req.query)) {

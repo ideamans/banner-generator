@@ -30,6 +30,7 @@
     "testdata",
     "transpiled",
     "typedoc",
+    "unbrot",
     "untracked"
   ],
   "flagWords": [],

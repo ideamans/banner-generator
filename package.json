@@ -38,7 +38,7 @@
     "reset-hard": "git clean -dfx && git reset --hard && yarn",
     "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish",
     "adhoc": "run-s build && node dist/adhoc.js",
-    "server": "node dist/server.js"
+    "server": "run-s build && node dist/server.js"
   },
   "engines": {
     "node": ">=10"
