@@ -22,6 +22,7 @@ export async function computePsnr(toBePath: string, asIsSharp: Sharp.Sharp): Pro
 test('TypeA Banners - one text', async (t) => {
   const spec: BannerTypeA.BannerSpec = {
     bgUrl: 'https://notes.ideamans.com/ogp-background.jpg',
+    bgColor: '#444',
     overlayColor: '',
     paddingTop: '15%',
     paddingBottom: '15%',
@@ -57,6 +58,7 @@ test('TypeA Banners - one text', async (t) => {
 test('TypeA Banners - two texts', async (t) => {
   const spec: BannerTypeA.BannerSpec = {
     bgUrl: 'https://notes.ideamans.com/ogp-background.jpg',
+    bgColor: '#444',
     overlayColor: '',
     paddingTop: '15%',
     paddingBottom: '15%',
@@ -101,6 +103,7 @@ test('TypeA Banners - two texts', async (t) => {
 test('TypeA Banners - three texts', async (t) => {
   const spec: BannerTypeA.BannerSpec = {
     bgUrl: 'https://notes.ideamans.com/ogp-background.jpg',
+    bgColor: '#444',
     overlayColor: '',
     paddingTop: '15%',
     paddingBottom: '15%',

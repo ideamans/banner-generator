@@ -8,6 +8,7 @@ import { DependencyInterface, Scale } from '../types.js'
 export namespace BannerTypeA {
   export interface BannerSpec {
     bgUrl: string
+    bgColor: string
     overlayColor: string
     paddingTop: Scale
     paddingBottom: Scale
@@ -18,6 +19,7 @@ export namespace BannerTypeA {
   export function defaultBannerSpec(): BannerSpec {
     return {
       bgUrl: '',
+      bgColor: '#444',
       overlayColor: '',
       paddingTop: '15%',
       paddingBottom: '15%',
@@ -58,15 +60,35 @@ export namespace BannerTypeA {
     spec: BannerSpec,
     dependency: Pick<DependencyInterface, 'logger' | 'httpGetImage'>
   ): Promise<Sharp.Sharp> {
-    // bgImage required
-    if (!spec.bgUrl) {
-      throw new Error('bgUrl is required')
-    }
+    let bg: Sharp.Sharp
+    let bgMetrics: Sharp.Metadata
 
-    // bgImage sharp
-    const buffer = await dependency.httpGetImage(spec.bgUrl)
-    const bg = Sharp(buffer)
-    const bgMetrics = await bg.metadata()
+    if (spec.bgUrl) {
+      // bgImage sharp
+      const buffer = await dependency.httpGetImage(spec.bgUrl)
+      bg = Sharp(buffer)
+      bgMetrics = await bg.metadata()
+    } else {
+      // Use bgColor as background
+      const color = ColorParse(spec.bgColor)
+      if (color.space !== 'rgb') {
+        throw new Error('bgColor must be RGB color space')
+      }
+
+      // Default size when no bgUrl
+      const width = 1200
+      const height = 630
+
+      bg = Sharp({
+        create: {
+          width,
+          height,
+          channels: 4,
+          background: { r: color.values[0], g: color.values[1], b: color.values[2], alpha: color.alpha || 1 },
+        },
+      })
+      bgMetrics = { width, height }
+    }
 
     const canvas = {
       width: bgMetrics.width,

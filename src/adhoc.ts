@@ -9,6 +9,7 @@ export async function typeA() {
   await Fsp.mkdir('tmp', { recursive: true })
   const spec: BannerTypeA.BannerSpec = {
     bgUrl: 'https://notes.ideamans.com/ogp-background.jpg',
+    bgColor: '#444',
     overlayColor: '#00000080',
     paddingTop: '15%',
     paddingBottom: '15%',

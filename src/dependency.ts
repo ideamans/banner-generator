@@ -58,7 +58,10 @@ export class Dependency implements DependencyInterface {
       }
     }
 
-    const getRes = await Axios.get<Buffer>(url, { responseType: 'arraybuffer', maxContentLength: this.imageCache.maxSize })
+    const getRes = await Axios.get<Buffer>(url, {
+      responseType: 'arraybuffer',
+      maxContentLength: this.imageCache.maxSize,
+    })
     const buffer = getRes.data
 
     if (buffer.length > this.imageCache.maxSize) {
