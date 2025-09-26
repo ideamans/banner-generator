@@ -1,6 +1,6 @@
 {
   "name": "ideamans-banner-generator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Generator web server of banners like OGP images.",
   "type": "module",
   "main": "dist/index.js",

@@ -58,17 +58,12 @@ export class Dependency implements DependencyInterface {
       }
     }
 
-    const headRes = await Axios.head(url)
-    const contentLength = parseInt(headRes.headers['content-length'] || '0', 10)
-    if (contentLength < 1) {
-      throw new Error(`Invalid content-length of ${url}: ${headRes.headers['content-length']}`)
-    }
-    if (contentLength > this.imageCache.maxSize) {
-      throw new Error(`Image too large of ${url}: ${contentLength} > ${this.imageCache.maxSize}`)
-    }
-
-    const getRes = await Axios.get<Buffer>(url, { responseType: 'arraybuffer' })
+    const getRes = await Axios.get<Buffer>(url, { responseType: 'arraybuffer', maxContentLength: this.imageCache.maxSize })
     const buffer = getRes.data
+
+    if (buffer.length > this.imageCache.maxSize) {
+      throw new Error(`Image too large of ${url}: ${buffer.length} > ${this.imageCache.maxSize}`)
+    }
 
     await Fsp.writeFile(cachePath, buffer)
 
