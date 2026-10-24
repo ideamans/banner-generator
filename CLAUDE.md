@@ -105,6 +105,20 @@ npm run adhoc
 
 フォントファイルは `/fonts/` ディレクトリに配置 (.otf形式)
 
+### テスト
+
+`yarn test` は build → eslint → prettier → cspell → ava(`nyc --silent ava`) を順に実行する。
+avaは `src/**/*.spec.ts` を `dist/` にビルドされたJSとして実行する（`compile: false`）ため、必ず先に `yarn build` が必要。
+
+- `src/types.spec.ts` - `parseScale` の単位解釈
+- `src/text.spec.ts` - フォントサイズの自動調整（minWidth/maxWidth）、SVG生成、配置
+- `src/banners/type-a.spec.ts` - `BannerTypeA.render` のゴールデン画像比較（PSNR）、bgColor/overlayColor、エラー
+- `src/server.spec.ts` - `dist/server.js` を子プロセスで起動し、ローカルHTTPサーバーから背景画像を配信してエンドポイントを検証
+
+ゴールデン画像は `testdata/type-a/*.jpg`。描画を意図的に変えた場合は各テストの `saveAsToBe` のコメントを外して再生成する。
+
+既知の挙動: `merge` パラメータは現状効かない（`ts-deepmerge` の `merge()` は非破壊で、戻り値を使っていないため）。`server.spec.ts` はこの現状をそのまま記録している。
+
 ### Prettier設定
 
 - シングルクォート使用
