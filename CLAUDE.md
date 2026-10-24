@@ -50,12 +50,16 @@ npm run adhoc
 ### アーキテクチャと技術スタック
 
 **主要技術:**
-- Node.js 22 (ES modules)
-- TypeScript 5.6+
-- Fastify 5.0 (高速HTTPサーバー)
-- Sharp 0.33+ (画像処理)
+- Node.js 22.20+ (ES modules。Dockerは `node:22.23.4`)
+- TypeScript 6.0 (`module`/`moduleResolution` は `nodenext`、`strict: false`)
+  - TypeScript 7 は typescript-eslint が未対応のため 6.0 系に固定
+- Fastify 5 (高速HTTPサーバー)
+- Sharp 0.35+ (画像処理)
+  - 0.34 以降は ESM 型定義のため `Sharp.Sharp` のような名前空間参照は使えない。型は `import type * as SharpTypes from 'sharp'` から参照する
 - text-to-svg 3.1+ (SVGテキスト生成)
-- Pino (構造化ロギング)
+- Pino 10 (構造化ロギング)
+- ESLint 10 (flat config: `eslint.config.js`、import順序は `eslint-plugin-import-x`)
+- Prettier 3 (`trailingComma: es5` で v2 時代の整形を維持)
 
 **画像処理の仕組み:**
 1. 背景画像をHTTPで取得してSharpで読み込み
@@ -71,6 +75,8 @@ npm run adhoc
 - `/src/text.ts` - テキストレイアウト計算とSVG生成 (1行/2行/3行の配置関数)
 - `/src/types.ts` - 型定義とScale値パーサー
 - `/src/dependency.ts` - 依存性注入 (logger、HTTP client)
+
+`sharp-iqa` はテスト専用（devDependencies）。内部の sharp は `resolutions` で本体と同じ版に揃えている。
 
 **テキストレイアウトロジック:**
 - `placeOneSvgText()` - 1行: 中央配置
@@ -104,6 +110,22 @@ npm run adhoc
 - `NotoSansJP-Medium` - 中太
 
 フォントファイルは `/fonts/` ディレクトリに配置 (.otf形式)
+
+### テスト
+
+`yarn test` は build → eslint → prettier → cspell → ava(`nyc --silent ava`) を順に実行する。
+avaは `src/**/*.spec.ts` を `dist/` にビルドされたJSとして実行する（`compile: false`）ため、必ず先に `yarn build` が必要。
+
+- `src/types.spec.ts` - `parseScale` の単位解釈
+- `src/text.spec.ts` - フォントサイズの自動調整（minWidth/maxWidth）、SVG生成、配置
+- `src/banners/type-a.spec.ts` - `BannerTypeA.render` のゴールデン画像比較（PSNR）、bgColor/overlayColor、エラー
+- `src/server.spec.ts` - `dist/server.js` を子プロセスで起動し、ローカルHTTPサーバーから背景画像を配信してエンドポイントを検証
+
+ava は `workerThreads: false`（子プロセス実行）。sharp 0.35 をワーカースレッドで読み込むと、amd64 エミュレーション下（Apple Silicon で `docker.sh` を実行した場合など）の終了時に libuv のアサーションで abort するため。
+
+ゴールデン画像は `testdata/type-a/*.jpg`。描画を意図的に変えた場合は各テストの `saveAsToBe` のコメントを外して再生成する。
+
+既知の挙動: `merge` パラメータは現状効かない（`ts-deepmerge` の `merge()` は非破壊で、戻り値を使っていないため）。`server.spec.ts` はこの現状をそのまま記録している。
 
 ### Prettier設定
 
