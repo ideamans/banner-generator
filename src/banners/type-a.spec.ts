@@ -3,18 +3,19 @@ import Path from 'path'
 
 import test from 'ava'
 import Sharp from 'sharp'
+import type * as SharpTypes from 'sharp'
 import { psnr } from 'sharp-iqa'
 
 import { BannerTypeA } from './type-a.js'
 
 const targetPsnr = 44
 
-export async function saveAsToBe(toBePath: string, asIsSharp: Sharp.Sharp) {
+export async function saveAsToBe(toBePath: string, asIsSharp: SharpTypes.Sharp) {
   const buffer = await asIsSharp.jpeg({ quality: 85 }).toBuffer()
   await Fsp.writeFile(toBePath, buffer)
 }
 
-export async function computePsnr(toBePath: string, asIsSharp: Sharp.Sharp): Promise<number> {
+export async function computePsnr(toBePath: string, asIsSharp: SharpTypes.Sharp): Promise<number> {
   const toBeSharp = Sharp(toBePath)
   return await psnr(toBeSharp, asIsSharp)
 }
@@ -154,7 +155,7 @@ test('TypeA Banners - three texts', async (t) => {
   t.true(psnrValue > targetPsnr, `PSNR expected over ${targetPsnr}, but got ${psnrValue}`)
 })
 
-async function pixelAt(sharp: Sharp.Sharp, x: number, y: number): Promise<number[]> {
+async function pixelAt(sharp: SharpTypes.Sharp, x: number, y: number): Promise<number[]> {
   const { data, info } = await sharp.clone().raw().toBuffer({ resolveWithObject: true })
   const offset = (y * info.width + x) * info.channels
   return Array.from(data.subarray(offset, offset + 3))

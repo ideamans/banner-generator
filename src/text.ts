@@ -1,6 +1,6 @@
 import Path from 'path'
 
-import Sharp from 'sharp'
+import type * as Sharp from 'sharp'
 import TextToSvg from 'text-to-svg'
 
 import { parseScale, Scale } from './types.js'
