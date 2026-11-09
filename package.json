@@ -1,6 +1,6 @@
 {
   "name": "ideamans-banner-generator",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "Generator web server of banners like OGP images.",
   "type": "module",
   "main": "dist/index.js",
@@ -120,6 +120,16 @@
     ]
   },
   "resolutions": {
-    "sharp-iqa/sharp": "^0.35.5"
+    "sharp-iqa/sharp": "^0.35.5",
+    "**/@vercel/nft/glob": "^14.0.2",
+    "**/nyc/glob": "^14.0.2",
+    "**/rimraf/glob": "^14.0.2",
+    "**/test-exclude/glob": "^14.0.2",
+    "**/@eslint/config-array/minimatch": "^11.0.1",
+    "**/@typescript-eslint/typescript-estree/minimatch": "^11.0.1",
+    "**/eslint-plugin-import-x/minimatch": "^11.0.1",
+    "**/eslint/minimatch": "^11.0.1",
+    "**/test-exclude/minimatch": "^11.0.1",
+    "**/typedoc/minimatch": "^11.0.1"
   }
 }

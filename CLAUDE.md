@@ -78,6 +78,11 @@ npm run adhoc
 
 `sharp-iqa` はテスト専用（devDependencies）。内部の sharp は `resolutions` で本体と同じ版に揃えている。
 
+`resolutions` の `**/<親>/glob`（^14.0.2）と `**/<親>/minimatch`（^11.0.1）は、最新の ava / nyc / rimraf / eslint /
+typescript-eslint / typedoc がまだ脆弱な版（moderate）を引くための引き上げ。開発用だけで、上流が上げたら外してよい。
+`tsconfig.tsbuildinfo` が残ったまま `dist/` を消すと tsc が何も出力せずテストが `ERR_MODULE_NOT_FOUND` になる（両方消す）。
+CI: `test.yml`（PR。Node 22.23.4 / 26 と docker build・コンテナでの生成）、`publish.yml`（main で Docker Hub へ。タグは version なので変更ごとに上げる）。
+
 **テキストレイアウトロジック:**
 - `placeOneSvgText()` - 1行: 中央配置
 - `placeTwoSvgTexts()` - 2行: タイトル+サブタイトルとして中央配置、lineGapで間隔調整
