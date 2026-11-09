@@ -1,5 +1,6 @@
 import ColorParse from 'color-parse'
 import Sharp from 'sharp'
+import type * as SharpTypes from 'sharp'
 
 import { placeOneSvgText, placeThreeSvgTexts, placeTwoSvgTexts, TextSpec } from '../text.js'
 import { DependencyInterface, Scale } from '../types.js'
@@ -59,9 +60,9 @@ export namespace BannerTypeA {
   export async function render(
     spec: BannerSpec,
     dependency: Pick<DependencyInterface, 'logger' | 'httpGetImage'>
-  ): Promise<Sharp.Sharp> {
-    let bg: Sharp.Sharp
-    let bgMetrics: Sharp.Metadata
+  ): Promise<SharpTypes.Sharp> {
+    let bg: SharpTypes.Sharp
+    let bgMetrics: Pick<SharpTypes.Metadata, 'width' | 'height'>
 
     if (spec.bgUrl) {
       // bgImage sharp
@@ -99,7 +100,7 @@ export namespace BannerTypeA {
     }
 
     // overlays
-    let overlays: Sharp.OverlayOptions[] = []
+    let overlays: SharpTypes.OverlayOptions[] = []
 
     // overlay color
     if (spec.overlayColor) {
